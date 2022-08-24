@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:behavior="clr-namespace:Todo.me.Behaviour"
+             xmlns:viewmodel="clr-namespace:Todo.me.ViewModel"
+             xmlns:model="clr-namespace:Todo.me.Model"
+             x:Class="Todo.me.View.TodoView"
+             x:DataType="viewmodel:TodoViewModel"
+             xmlns:Converters="clr-namespace:Todo.me.View.Converters"
+             NavigationPage.HasNavigationBar="False"
+             Title="Todo">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="DateTimeLabelStyle"
+               TargetType="Label">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+            <Converters:ValueToColorConverter x:Key="ValueToColorConverter" />
+            <Color x:Key="TrueLabelTextColor">Gray</Color>
+            <Color x:Key="FalseLabelTextColor">Black</Color>
+            <toolkit:BoolToObjectConverter x:Key="BoolToTextColorLabelConverter" 
+                                   TrueObject="{StaticResource TrueLabelTextColor}" 
+                                   FalseObject="{StaticResource FalseLabelTextColor}"/>
+
+            <!--<TextDecorations x:Key="TrueLabelTextDecorations">Strikethrough</TextDecorations>
+            <TextDecorations x:Key="FalseLabelTextDecorations">None</TextDecorations>-->
+
+            <!--<toolkit:BoolToObjectConverter x:Key="BoolToTextDecorationsLabelConverter" 
+                                   TrueObject="{StaticResource TrueLabelTextDecorations}" 
+                                   FalseObject="{StaticResource FalseLabelTextDecorations}"/>-->
+
+            <Color x:Key="TrueCheckBoxColor">Gray</Color>
+            <Color x:Key="FalseCheckBoxColor">Green</Color>
+            <toolkit:BoolToObjectConverter x:Key="BoolToColorIsCompleteConverter" 
+                                   TrueObject="{StaticResource TrueCheckBoxColor}" 
+                                   FalseObject="{StaticResource FalseCheckBoxColor}"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <HorizontalStackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource Black}, Light={StaticResource White}}">
+        <Grid Padding="20, 10, 20, 0" HorizontalOptions="StartAndExpand" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!--<Label Text="Thursday,2 June 2022" Style="{StaticResource DateTimeLabelStyle}" Grid.Row="0" Grid.Column="0"/>
+            <Label Text="3:19 pm" Style="{StaticResource DateTimeLabelStyle}" Grid.Row="0" Grid.Column="1"/>-->
+
+            <CollectionView  x:Name="xCollectionView" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalOptions="StartAndExpand"  ItemsSource="{Binding TodoModels}"
+                             WidthRequest="350">
+                <!--<CollectionView.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="-5,-5"
+                            Radius="30"
+                            Opacity="0.145"/>
+                </CollectionView.Shadow>-->
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid WidthRequest="{Binding Path=Width, Source={Reference xCollectionView}}" 
+                              HorizontalOptions="StartAndExpand" x:DataType="model:TodoModel"
+                              HeightRequest="120" Margin="0" Padding="0" RowSpacing="0" >
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="8" />
+                            </Grid.RowDefinitions>
+                            <Frame Padding="10,5,10,5" HorizontalOptions="StartAndExpand" CornerRadius="15" 
+                                   WidthRequest="350"
+                                   Background="{Binding Color, Converter={StaticResource ValueToColorConverter}}"
+                                   BorderColor="#f9f9fb">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=TodoTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}" 
+                                                      CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                                <StackLayout Orientation="Horizontal">
+                                    <!--TextDecorations="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextDecorationsLabelConverter}}"-->
+
+                                    <Label 
+                                        VerticalOptions="CenterAndExpand"
+                                        TextColor="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextColorLabelConverter}}" 
+                                        Text="{Binding Name}" 
+                                        MaxLines="1"
+                                        FontSize="Large"
+                                        LineBreakMode="TailTruncation"
+                                        HorizontalOptions="FillAndExpand"/>
+                                    <Label 
+                                        VerticalOptions="CenterAndExpand"
+                                        TextColor="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextColorLabelConverter}}" 
+                                        Text="{Binding Color}" 
+                                        MaxLines="1"
+                                        FontSize="Large"
+                                        LineBreakMode="TailTruncation"
+                                        HorizontalOptions="FillAndExpand"/>
+                                    <behavior:EventToCommandObserver
+                                        Command="{Binding Path=IsCompleteTappedCommand, Mode=OneTime, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}"
+                                        CommandParameter="{Binding .}">
+                                        <CheckBox 
+                                            x:Name="xIsComplete" 
+                                            behavior:EventToCommandObserver.EventName="CheckedChanged"
+                                            Color="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToColorIsCompleteConverter}}" 
+                                            IsChecked="{Binding IsComplete}"/>
+                                    </behavior:EventToCommandObserver>
+
+                                </StackLayout>
+                            </Frame>
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Text="+ Create"
+                FontSize="18"
+                VerticalOptions="End"
+                HorizontalOptions="End"
+                Command="{Binding AddTappedCommand}"
+                Margin="25"
+                HeightRequest="60"
+                WidthRequest="120"
+                Grid.Row="2"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                CornerRadius="15"
+                BackgroundColor="#c8e6fe"
+                 TextColor="Black">
+                <Button.Shadow>
+                <Shadow Brush="Black"
+                Offset="10,15"
+                Radius="35"
+                Opacity="0.3"
+                />
+                </Button.Shadow>
+            </Button>
+        </Grid>
+
+
+        <!--<Frame 
+            BackgroundColor="Purple"
+            CornerRadius="10"
+            Padding="0"
+            Margin="0,0,10,10"
+            WidthRequest="100"
+            HeightRequest="50"
+            HorizontalOptions="Center"
+            VerticalOptions="End">
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding AddTappedCommand}" />
+            </Frame.GestureRecognizers>
+            <Label Text="+ Create" TextColor="White" FontSize="20" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+        </Frame>-->
+
+
+    </HorizontalStackLayout>
+</ContentPage>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:behavior="clr-namespace:Todo.me.Behaviour"
+             xmlns:viewmodel="clr-namespace:Todo.me.ViewModel"
+             xmlns:model="clr-namespace:Todo.me.Model"
+             x:Class="Todo.me.View.TodoDetailsView"
+             x:DataType="viewmodel:TodoDetailsViewModel"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+             Title="Todo Details">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:IntToBoolConverter x:Key="IntToBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout
+            Margin="20"
+            Spacing="10"
+            VerticalOptions="StartAndExpand">
+
+                <Label Text="Name" />
+                <Entry Text="{Binding TodoModel.Name, Mode=TwoWay}" BackgroundColor="White" />
+
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                    Margin="0,10"
+                    HorizontalOptions="StartAndExpand"
+                    Text="Done" />
+                    <Switch HorizontalOptions="EndAndExpand" IsToggled="{Binding TodoModel.IsComplete, Mode=TwoWay}" />
+                </StackLayout>
+
+                <Button Command="{Binding SaveCommand}" Text="Save" />
+
+                <Button Command="{Binding DeleteCommand}" IsVisible="{Binding TodoModel.Id, Converter={StaticResource IntToBoolConverter}}" Text="Delete" />
+
+                <Button Command="{Binding CancelCommand}" Text="Cancel" />
+
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
