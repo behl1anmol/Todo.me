@@ -5,11 +5,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Todo.me"
     xmlns:view="clr-namespace:Todo.me.View"
-    Shell.FlyoutBehavior="Disabled">
+    Shell.FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="False">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate view:TodoView}"
-        Route="TodoView" />
+
+
+    <TabBar>
+        <Tab Title="ToDo"
+            Icon="todo.png">
+            <ShellContent Title="Todo" ContentTemplate="{DataTemplate view:TodoView}"
+                    Route="TodoView" />
+        </Tab>
+        <Tab Title="Sprints"
+            Icon="sprint.png">
+            <ShellContent Title="Sprint" ContentTemplate="{DataTemplate view:SprintView}"
+                    Route="SprintView" />
+        </Tab>
+        <Tab Title="Settings"
+            Icon="setting.png">
+            <ShellContent Title="Todo" ContentTemplate="{DataTemplate view:TodoView}"
+                    Route="TodoView" />
+        </Tab>
+    </TabBar>
+
 
 </Shell>

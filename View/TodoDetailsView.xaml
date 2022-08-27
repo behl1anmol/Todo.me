@@ -5,40 +5,91 @@
              xmlns:behavior="clr-namespace:Todo.me.Behaviour"
              xmlns:viewmodel="clr-namespace:Todo.me.ViewModel"
              xmlns:model="clr-namespace:Todo.me.Model"
+             xmlns:Converters="clr-namespace:Todo.me.View.Converters"
              x:Class="Todo.me.View.TodoDetailsView"
              x:DataType="viewmodel:TodoDetailsViewModel"
-             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
-             Title="Todo Details">
+             BackgroundColor="{Binding TodoModel.Color, Converter={StaticResource ValueToColorConverter}}"
+             Title="Todo Details"
+             Shell.TabBarIsVisible="False"
+             Shell.BackgroundColor="{Binding TodoModel.Color, Converter={StaticResource ValueToColorConverter}}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:IntToBoolConverter x:Key="IntToBoolConverter" />
+            <Converters:ValueToColorConverter x:Key="ValueToColorConverter" />
+            <Color x:Key="TrueLabelTextColor">Gray</Color>
+            <Color x:Key="FalseLabelTextColor">Black</Color>
+            <toolkit:BoolToObjectConverter x:Key="BoolToTextColorLabelConverter" 
+                                   TrueObject="{StaticResource TrueLabelTextColor}" 
+                                   FalseObject="{StaticResource FalseLabelTextColor}"/>
+
+            <!--<TextDecorations x:Key="TrueLabelTextDecorations">Strikethrough</TextDecorations>
+            <TextDecorations x:Key="FalseLabelTextDecorations">None</TextDecorations>-->
+
+            <!--<toolkit:BoolToObjectConverter x:Key="BoolToTextDecorationsLabelConverter" 
+                                   TrueObject="{StaticResource TrueLabelTextDecorations}" 
+                                   FalseObject="{StaticResource FalseLabelTextDecorations}"/>-->
+
+            <Color x:Key="TrueCheckBoxColor">Gray</Color>
+            <Color x:Key="FalseCheckBoxColor">Green</Color>
+            <toolkit:BoolToObjectConverter x:Key="BoolToColorIsCompleteConverter" 
+                                   TrueObject="{StaticResource TrueCheckBoxColor}" 
+                                   FalseObject="{StaticResource FalseCheckBoxColor}"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout
-            Margin="20"
-            Spacing="10"
-            VerticalOptions="StartAndExpand">
+        <Grid Margin="15,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackLayout Spacing="5" 
+                         Grid.Row="0"
+                         Grid.ColumnSpan="4"
+                         VerticalOptions="Start"
+                         Orientation="Vertical">
 
-                <Label Text="Name" />
-                <Entry Text="{Binding TodoModel.Name, Mode=TwoWay}" BackgroundColor="White" />
+                <HorizontalStackLayout Spacing="20">
+                    <ImageButton Command="{Binding SaveCommand}" Source="back.png" Scale="1.1"/>
+                    <Entry Text="{Binding TodoModel.Name, Mode=TwoWay}" Placeholder="Title" 
+                       FontSize="Title"/>
+                </HorizontalStackLayout>
 
-                <StackLayout Orientation="Horizontal">
-                    <Label
-                    Margin="0,10"
-                    HorizontalOptions="StartAndExpand"
-                    Text="Done" />
-                    <Switch HorizontalOptions="EndAndExpand" IsToggled="{Binding TodoModel.IsComplete, Mode=TwoWay}" />
-                </StackLayout>
 
-                <Button Command="{Binding SaveCommand}" Text="Save" />
-
-                <Button Command="{Binding DeleteCommand}" IsVisible="{Binding TodoModel.Id, Converter={StaticResource IntToBoolConverter}}" Text="Delete" />
-
-                <Button Command="{Binding CancelCommand}" Text="Cancel" />
-
+            <Editor Text="{Binding TodoModel.Description}" 
+                        Placeholder="Start Typing"
+                    FontSize="Body" FontAutoScalingEnabled="True"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"/>
             </StackLayout>
-        </StackLayout>
+
+            <StackLayout HorizontalOptions="CenterAndExpand" Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="4" 
+                         Margin="0,10">
+                <behavior:EventToCommandObserver
+                                        Command="{Binding Path=IsCompleteTappedCommand, Mode=OneTime, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}"
+                                        CommandParameter="{Binding .}" Grid.Column="0"
+                    HorizontalOptions="Center">
+                    <CheckBox x:Name="xIsComplete" 
+                              behavior:EventToCommandObserver.EventName="CheckedChanged"
+                              Color="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToColorIsCompleteConverter}}" 
+                              IsChecked="{Binding TodoModel.IsComplete, Mode=TwoWay}"/>
+                </behavior:EventToCommandObserver>
+            <!--<ImageButton Command="{Binding SaveCommand}" Source="save.png" Grid.Column="1"
+                    HorizontalOptions="CenterAndExpand" Scale="1.1"/>-->
+                <ImageButton Command="{Binding DeleteCommand}" 
+                        IsVisible="{Binding TodoModel.Id, Converter={StaticResource IntToBoolConverter}}" 
+                        Source="delete.png" 
+                        Grid.Column="1"
+                        HorizontalOptions="CenterAndExpand" Scale="0.8"/>
+            <!--<ImageButton Command="{Binding CancelCommand}" Source="cancel.png" 
+                        Grid.Column="3"
+                        HorizontalOptions="CenterAndExpand" Scale="1.1"/>-->
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

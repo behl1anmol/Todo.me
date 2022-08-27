@@ -1,4 +1,6 @@
-﻿namespace Todo.me.ViewModel;
+﻿using Todo.me.Model;
+
+namespace Todo.me.ViewModel;
 public abstract class BaseViewModel
 {
     private bool isBusy;
