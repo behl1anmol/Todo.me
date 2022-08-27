@@ -20,16 +20,23 @@ public partial class TodoDetailsViewModel : BaseViewModel
     [RelayCommand]
     void Save()
     {
-        var t = Task.Run(async () =>
+        if (TodoModel.Name == null && TodoModel.Description == null)
         {
-            var service = await TodoService.Instance;
-            TodoModel.Color = RandomGenerator();
-            await service.SaveTodo(TodoModel.Todotable);
-        }).
-            ContinueInMainThreadWith(async () =>
+            Cancel();
+        }
+        else
+        {
+            var t = Task.Run(async () =>
             {
-                await Shell.Current.GoToAsync("..");
-            });
+                var service = await TodoService.Instance;
+                TodoModel.Color = RandomGenerator();
+                await service.SaveTodo(TodoModel.Todotable);
+            }).
+                ContinueInMainThreadWith(async () =>
+                {
+                    await Shell.Current.GoToAsync("..");
+                });
+        }
     }
     [RelayCommand]
     void Delete()

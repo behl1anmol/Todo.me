@@ -42,7 +42,7 @@
     <HorizontalStackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource Black}, Light={StaticResource White}}">
         <Grid Padding="20, 10, 20, 0" HorizontalOptions="StartAndExpand" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
@@ -51,17 +51,17 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <!--<Label Text="Thursday,2 June 2022" Style="{StaticResource DateTimeLabelStyle}" Grid.Row="0" Grid.Column="0"/>
-            <Label Text="3:19 pm" Style="{StaticResource DateTimeLabelStyle}" Grid.Row="0" Grid.Column="1"/>-->
-
-            <CollectionView  x:Name="xCollectionView" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalOptions="StartAndExpand"  ItemsSource="{Binding TodoModels}"
+            <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="2" Margin="15,15">
+                <Label Text="ToDo" FontAttributes="Bold" FontSize="30"/>
+            </HorizontalStackLayout>
+            <CollectionView  x:Name="xCollectionView" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalOptions="StartAndExpand"  ItemsSource="{Binding TodoModels}"
                              WidthRequest="350">
-                <!--<CollectionView.Shadow>
+                <CollectionView.Shadow>
                     <Shadow Brush="Black"
-                            Offset="-5,-5"
+                            Offset="-5,15"
                             Radius="30"
-                            Opacity="0.145"/>
-                </CollectionView.Shadow>-->
+                            Opacity="0.3"/>
+                </CollectionView.Shadow>
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical"/>
                 </CollectionView.ItemsLayout>
@@ -78,7 +78,7 @@
                             <Frame Padding="10,5,10,5" HorizontalOptions="StartAndExpand" CornerRadius="15" 
                                    WidthRequest="350"
                                    Background="{Binding Color, Converter={StaticResource ValueToColorConverter}}"
-                                   BorderColor="#f9f9fb">
+                                   BorderColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}">
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Path=TodoTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}" 
                                                       CommandParameter="{Binding .}" />

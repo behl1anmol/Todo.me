@@ -37,6 +37,16 @@ public class TodoModel
             Todotable.Color = value;
         }
     }
+    public string Description
+    {
+        get => Todotable.Description;
+        set
+        {
+            Todotable.Description = value;
+        }
+    }
+
+
 
     public bool IsComplete
     {
