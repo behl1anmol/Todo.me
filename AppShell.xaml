@@ -8,9 +8,10 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False">
 
+    <ShellContent Title="Todo" ContentTemplate="{DataTemplate view:TodoView}"
+                    Route="TodoView" />
 
-
-    <TabBar>
+    <!--<TabBar>
         <Tab Title="ToDo"
             Icon="todo.png">
             <ShellContent Title="Todo" ContentTemplate="{DataTemplate view:TodoView}"
@@ -26,7 +27,7 @@
             <ShellContent Title="Todo" ContentTemplate="{DataTemplate view:TodoView}"
                     Route="TodoView" />
         </Tab>
-    </TabBar>
+    </TabBar>-->
 
 
 </Shell>

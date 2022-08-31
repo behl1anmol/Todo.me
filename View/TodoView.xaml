@@ -44,22 +44,22 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="70"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="2" Margin="15,15">
+            <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="3" Margin="15,15">
                 <Label Text="ToDo" FontAttributes="Bold" FontSize="30"/>
             </HorizontalStackLayout>
-            <CollectionView  x:Name="xCollectionView" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalOptions="StartAndExpand"  ItemsSource="{Binding TodoModels}"
+            <CollectionView  x:Name="xCollectionView" Grid.Row="1"  Grid.ColumnSpan="3" HorizontalOptions="StartAndExpand"  ItemsSource="{Binding TodoModels}"
                              WidthRequest="350">
                 <CollectionView.Shadow>
-                    <Shadow Brush="Black"
-                            Offset="-5,15"
-                            Radius="30"
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                            Radius="5"
                             Opacity="0.3"/>
                 </CollectionView.Shadow>
                 <CollectionView.ItemsLayout>
@@ -75,18 +75,48 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="8" />
                             </Grid.RowDefinitions>
-                            <Frame Padding="10,5,10,5" HorizontalOptions="StartAndExpand" CornerRadius="15" 
+                            <Frame BackgroundColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}" 
+                                    CornerRadius="15"
+                                   BorderColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}">
+
+                                <Frame.Shadow>
+                                    <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                                            Offset="-5,-5"
+                                            Radius="50"
+                                            Opacity="1"/>
+                                </Frame.Shadow>
+
+                                <SwipeView HorizontalOptions="Center" VerticalOptions="Center" >
+                                    <SwipeView.LeftItems>
+                                        <SwipeItems
+                                        SwipeBehaviorOnInvoked="RemainOpen">
+                                            <SwipeItem
+                                            IconImageSource="delete" 
+                                            BackgroundColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}"/>
+                                        </SwipeItems>
+                                    </SwipeView.LeftItems>
+
+                                    <SwipeView.RightItems>
+                                        <SwipeItems SwipeBehaviorOnInvoked="RemainOpen">
+                                            <SwipeItem
+                                            IconImageSource="approve"
+                                             BackgroundColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}"
+                                             Command="{Binding Path=IsCompleteTappedCommand, Mode=OneTime, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}"
+                                             CommandParameter="{Binding .}"/>
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <Frame Padding="10,5,10,5" HorizontalOptions="StartAndExpand" CornerRadius="15" 
                                    WidthRequest="350"
                                    Background="{Binding Color, Converter={StaticResource ValueToColorConverter}}"
                                    BorderColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Path=TodoTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}" 
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Path=TodoTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}" 
                                                       CommandParameter="{Binding .}" />
-                                </Frame.GestureRecognizers>
-                                <StackLayout Orientation="Horizontal">
-                                    <!--TextDecorations="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextDecorationsLabelConverter}}"-->
+                                        </Frame.GestureRecognizers>
+                                        <StackLayout Orientation="Horizontal">
+                                            <!--TextDecorations="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextDecorationsLabelConverter}}"-->
 
-                                    <Label 
+                                            <Label 
                                         VerticalOptions="CenterAndExpand"
                                         TextColor="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextColorLabelConverter}}" 
                                         Text="{Binding Name}" 
@@ -94,7 +124,7 @@
                                         FontSize="Large"
                                         LineBreakMode="TailTruncation"
                                         HorizontalOptions="FillAndExpand"/>
-                                    <Label 
+                                            <Label 
                                         VerticalOptions="CenterAndExpand"
                                         TextColor="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextColorLabelConverter}}" 
                                         Text="{Binding Color}" 
@@ -102,45 +132,53 @@
                                         FontSize="Large"
                                         LineBreakMode="TailTruncation"
                                         HorizontalOptions="FillAndExpand"/>
-                                    <behavior:EventToCommandObserver
+                                            <behavior:EventToCommandObserver
                                         Command="{Binding Path=IsCompleteTappedCommand, Mode=OneTime, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}"
                                         CommandParameter="{Binding .}">
-                                        <CheckBox 
+                                                <CheckBox 
                                             x:Name="xIsComplete" 
                                             behavior:EventToCommandObserver.EventName="CheckedChanged"
                                             Color="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToColorIsCompleteConverter}}" 
                                             IsChecked="{Binding IsComplete}"/>
-                                    </behavior:EventToCommandObserver>
+                                            </behavior:EventToCommandObserver>
 
-                                </StackLayout>
+                                        </StackLayout>
+                                    </Frame>
+                                </SwipeView>
                             </Frame>
-
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Button Text="+ Create"
-                FontSize="18"
-                VerticalOptions="End"
-                HorizontalOptions="End"
-                Command="{Binding AddTappedCommand}"
-                Margin="25"
-                HeightRequest="60"
-                WidthRequest="120"
-                Grid.Row="2"
-                Grid.Column="1"
-                Grid.ColumnSpan="2"
-                CornerRadius="15"
-                BackgroundColor="#c8e6fe"
-                 TextColor="Black">
-                <Button.Shadow>
-                <Shadow Brush="Black"
-                Offset="10,15"
-                Radius="35"
-                Opacity="0.3"
-                />
-                </Button.Shadow>
-            </Button>
+            <Border Grid.Row="2"
+                    Grid.Column="1"
+                    StrokeThickness="0"
+                    Padding="10"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                    HorizontalOptions="Center">
+                <Grid RowDefinitions="*" ColumnDefinitions="*,*,*"
+                  ColumnSpacing="50"
+                  VerticalOptions="Center">
+                    <ImageButton Grid.Column="0" Source="delete" HeightRequest="35"
+                                 WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center" />
+                    <Border Grid.Column="1"
+                        StrokeThickness="0" StrokeShape="RoundRectangle 10"
+                        BackgroundColor="CadetBlue"
+                        HeightRequest="48" WidthRequest="48">
+                        <Border.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                            Radius="5"
+                            Opacity="0.3"/>
+                        </Border.Shadow>
+                        <ImageButton Source="add" HeightRequest="32" WidthRequest="22" 
+                                     HorizontalOptions="Center" VerticalOptions="Center"
+                                     Command="{Binding AddTappedCommand}"/>
+                    </Border>
+                    <ImageButton Grid.Column="2" Source="setting" HeightRequest="35"
+                                 WidthRequest="30"
+                                 HorizontalOptions="Center" VerticalOptions="Center" />
+                </Grid>
+            </Border>
         </Grid>
 
 

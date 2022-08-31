@@ -17,6 +17,6 @@ public abstract class BaseViewModel
     {
         Random rnd = new Random();
 
-        return rnd.Next(1,4);
+        return rnd.Next(1,11);
     }
 }

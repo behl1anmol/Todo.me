@@ -7,5 +7,5 @@ public partial class TodoDetailsView : ContentPage
 		InitializeComponent();
         var hash = _viewModel.GetHashCode();
         BindingContext = _viewModel;
-	}
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Todo.me.Model.DataTable;
+﻿using Microsoft.Maui.ApplicationModel;
+using Todo.me.Model.DataTable;
 
 namespace Todo.me.ViewModel;
 
@@ -8,11 +9,13 @@ namespace Todo.me.ViewModel;
 
 public partial class TodoDetailsViewModel : BaseViewModel
 {
+    public AppThemeService _appTheme;
+
 
     [ObservableProperty]
     private TodoModel _todoModel;
 
-    public TodoDetailsViewModel()
+    public TodoDetailsViewModel(AppThemeService appTheme)
     {
         TodoModel = new TodoModel();
     }
@@ -57,4 +60,5 @@ public partial class TodoDetailsViewModel : BaseViewModel
     {
         await Shell.Current.GoToAsync("..");
     }
+
 }
