@@ -15,6 +15,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<TodoViewModel>();
         builder.Services.AddSingleton<SprintViewModel>();
+#if __ANDROID__
+        builder.Services.AddSingleton<IThemeEnvironment, Todo.me.ThemeEnvironment>();
+#endif
+        builder.Services.AddSingleton<AppThemeService>();
 
         builder.Services.AddSingleton<TodoView>();
         builder.Services.AddSingleton<SprintView>();
@@ -23,6 +27,8 @@ public static class MauiProgram
         builder.Services.AddTransient<SprintDetailsViewModel>();
         builder.Services.AddTransient<TodoDetailsView>();
         builder.Services.AddTransient<SprintDetailsView>();
+       
+
 
         return builder.Build();
     }
