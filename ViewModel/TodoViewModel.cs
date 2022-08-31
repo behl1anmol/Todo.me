@@ -46,6 +46,15 @@ public partial class TodoViewModel :BaseViewModel
         IsBusy = false;
     }
 
+    [RelayCommand]
+    async void GotoMainPage()
+    {
+        if (IsBusy) return;
+        IsBusy = true;
+        await Shell.Current.GoToAsync("..");
+        IsBusy = false;
+    }
+
     internal void Refresh()
     {
         if (IsBusy)

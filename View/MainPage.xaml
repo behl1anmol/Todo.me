@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:Todo.me.ViewModel"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             x:Class="Todo.me.View.MainPage"
+             x:DataType="viewmodel:MainPageViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <skia:SKLottieView
+                Source="todo.json"
+                RepeatCount="-1"
+                SemanticProperties.Description="Welcome to Todo.me!!"
+                HeightRequest="200"
+                WidthRequest="200"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Hello,&#x0a;Welcome to Todo.me!!"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                FontAttributes="Bold"
+                HorizontalOptions="Start">
+            </Label>
+
+            <Label
+                Text="I am a simple note taking and task tracking app for your daily routine."
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Todo.me desctiption."
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+            <Button
+                x:Name="GotoToDo"
+                Text="Goto ToDo"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Command="{Binding GotoTodoViewCommand}"
+                HorizontalOptions="Center" 
+                BackgroundColor="CadetBlue"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
