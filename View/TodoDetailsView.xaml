@@ -23,7 +23,7 @@
                                    FalseObject="{StaticResource FalseLabelTextColor}"/>
 
             <Color x:Key="TrueCheckBoxColor">Gray</Color>
-            <Color x:Key="FalseCheckBoxColor">Green</Color>
+            <Color x:Key="FalseCheckBoxColor">CadetBlue</Color>
             <toolkit:BoolToObjectConverter x:Key="BoolToColorIsCompleteConverter" 
                                    TrueObject="{StaticResource TrueCheckBoxColor}" 
                                    FalseObject="{StaticResource FalseCheckBoxColor}"/>

@@ -32,7 +32,7 @@
                                    FalseObject="{StaticResource FalseLabelTextDecorations}"/>-->
 
             <Color x:Key="TrueCheckBoxColor">Gray</Color>
-            <Color x:Key="FalseCheckBoxColor">Green</Color>
+            <Color x:Key="FalseCheckBoxColor">CadetBlue</Color>
             <toolkit:BoolToObjectConverter x:Key="BoolToColorIsCompleteConverter" 
                                    TrueObject="{StaticResource TrueCheckBoxColor}" 
                                    FalseObject="{StaticResource FalseCheckBoxColor}"/>
@@ -53,7 +53,7 @@
             </Grid.ColumnDefinitions>
 
             <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="3" Margin="15,15">
-                <Label Text="ToDo" FontAttributes="Bold" FontSize="30"/>
+                <Label Text="ToDo" FontAttributes="Bold" FontSize="35"/>
             </HorizontalStackLayout>
             <CollectionView  x:Name="xCollectionView" Grid.Row="1"  Grid.ColumnSpan="3" HorizontalOptions="StartAndExpand"  ItemsSource="{Binding TodoModels}"
                              WidthRequest="350">
@@ -105,43 +105,50 @@
                                              CommandParameter="{Binding .}"/>
                                         </SwipeItems>
                                     </SwipeView.RightItems>
-                                    <Frame Padding="10,5,10,5" HorizontalOptions="StartAndExpand" CornerRadius="15" 
+                                    <Frame Padding="10,0,10,0" HorizontalOptions="StartAndExpand" CornerRadius="15" 
                                    WidthRequest="350"
+                                   
                                    Background="{Binding Color, Converter={StaticResource ValueToColorConverter}}"
                                    BorderColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding Path=TodoTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}" 
                                                       CommandParameter="{Binding .}" />
                                         </Frame.GestureRecognizers>
-                                        <StackLayout Orientation="Horizontal">
+                                        <StackLayout Orientation="Vertical">
                                             <!--TextDecorations="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextDecorationsLabelConverter}}"-->
-
-                                            <Label 
-                                        VerticalOptions="CenterAndExpand"
+                                        
+                                        <Label 
+                                        
                                         TextColor="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextColorLabelConverter}}" 
                                         Text="{Binding Name}" 
                                         MaxLines="1"
-                                        FontSize="Large"
+                                        FontSize="Title"
+                                        FontAttributes="Bold"
                                         LineBreakMode="TailTruncation"
-                                        HorizontalOptions="FillAndExpand"/>
-                                            <Label 
-                                        VerticalOptions="CenterAndExpand"
-                                        TextColor="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextColorLabelConverter}}" 
-                                        Text="{Binding Color}" 
-                                        MaxLines="1"
-                                        FontSize="Large"
-                                        LineBreakMode="TailTruncation"
-                                        HorizontalOptions="FillAndExpand"/>
+                                        HorizontalOptions="FillAndExpand"
+                                        
+                                        />
+                                        <Label 
+                                            TextColor="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextColorLabelConverter}}" 
+                                            Text="{Binding Description}" 
+                                            MaxLines="1"
+                                            FontSize="Subtitle"
+                                            LineBreakMode="WordWrap"
+                                            
+                                            HorizontalOptions="StartAndExpand"/>
+                                           
                                             <behavior:EventToCommandObserver
-                                        Command="{Binding Path=IsCompleteTappedCommand, Mode=OneTime, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}"
-                                        CommandParameter="{Binding .}">
-                                                <CheckBox 
-                                            x:Name="xIsComplete" 
-                                            behavior:EventToCommandObserver.EventName="CheckedChanged"
-                                            Color="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToColorIsCompleteConverter}}" 
-                                            IsChecked="{Binding IsComplete}"/>
+                                                    Command="{Binding Path=IsCompleteTappedCommand, Mode=OneTime, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}"
+                                                    CommandParameter="{Binding .}"
+                                                    HorizontalOptions="End"
+                                                    VerticalOptions="End">
+                                            <CheckBox 
+                                                    x:Name="xIsComplete" 
+                                                    behavior:EventToCommandObserver.EventName="CheckedChanged"
+                                                    Color="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToColorIsCompleteConverter}}" 
+                                                    IsChecked="{Binding IsComplete}"/>
                                             </behavior:EventToCommandObserver>
-
+                                            
                                         </StackLayout>
                                     </Frame>
                                 </SwipeView>
@@ -159,8 +166,9 @@
                 <Grid RowDefinitions="*" ColumnDefinitions="*,*,*"
                   ColumnSpacing="50"
                   VerticalOptions="Center">
-                    <ImageButton Grid.Column="0" Source="delete" HeightRequest="35"
-                                 WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center" />
+                    <ImageButton Grid.Column="0" Source="todo" HeightRequest="35"
+                                 WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center" 
+                                 Command="{Binding GotoMainPageCommand}"/>
                     <Border Grid.Column="1"
                         StrokeThickness="0" StrokeShape="RoundRectangle 10"
                         BackgroundColor="CadetBlue"
@@ -182,20 +190,6 @@
         </Grid>
 
 
-        <!--<Frame 
-            BackgroundColor="Purple"
-            CornerRadius="10"
-            Padding="0"
-            Margin="0,0,10,10"
-            WidthRequest="100"
-            HeightRequest="50"
-            HorizontalOptions="Center"
-            VerticalOptions="End">
-            <Frame.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding AddTappedCommand}" />
-            </Frame.GestureRecognizers>
-            <Label Text="+ Create" TextColor="White" FontSize="20" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-        </Frame>-->
 
 
     </HorizontalStackLayout>

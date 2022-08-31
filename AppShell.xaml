@@ -8,8 +8,8 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False">
 
-    <ShellContent Title="Todo" ContentTemplate="{DataTemplate view:TodoView}"
-                    Route="TodoView" />
+    <ShellContent Title="MainPage" ContentTemplate="{DataTemplate view:MainPage}"
+                    Route="MainPage" />
 
     <!--<TabBar>
         <Tab Title="ToDo"
