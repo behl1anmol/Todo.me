@@ -24,16 +24,21 @@ public partial class App : Application
 
     protected override void OnSleep()
     {
+#if __ANDROID__
         _appTheme.SetAppTheme();
         RequestedThemeChanged -= App_RequestedThemeChanged;
+#endif
     }
 
     protected override void OnResume()
     {
+#if __ANDROID__
         _appTheme.SetAppTheme();
         RequestedThemeChanged += App_RequestedThemeChanged;
+#endif
     }
 
+#if __ANDROID__
     private void App_RequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
     {
         MainThread.BeginInvokeOnMainThread(() =>
@@ -41,4 +46,5 @@ public partial class App : Application
             _appTheme.SetAppTheme();
         });
     }
+#endif
 }
