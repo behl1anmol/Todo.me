@@ -1,0 +1,82 @@
+trigger:
+- main
+
+variables:
+    BuildConfiguration: Release
+    DotNetVersion: 6.0.300
+    VSVERSION: 17/pre
+
+stages:
+- stage: BuildAndroid
+  jobs:
+  - job: BuildMAUIApps
+    displayName: Build Todo.me App
+    pool:
+      vmImage: 'windows-2022'
+      demands:
+      - MSBuild
+      
+    steps:
+    
+    - task: UseDotNet@2
+      displayName: .NET Version
+      inputs:
+        packageType: 'sdk'
+        version: '$(DotNetVersion)'
+    
+    - task: Bash@3
+      displayName: Install MAUI
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet nuget locals all --clear 
+          dotnet workload install maui --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+          dotnet workload install android ios maccatalyst tvos macos maui wasm-tools --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+    
+    - task: Bash@3
+      displayName: Restore nuget
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet restore Todo.me.sln
+
+  # https://docs.microsoft.com/en-us/dotnet/maui/android/deployment/overview
+    - task: Bash@3
+      displayName: Build Android App
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet build -f net6.0-android -c Release
+
+- stage: BuildWindows
+  jobs:
+  - job: BuildMAUIApps
+    displayName: Build Todo.me App
+    pool:
+      vmImage: 'windows-2022'
+      demands:
+      - MSBuild
+      
+    steps:
+    - task: UseDotNet@2
+      displayName: .NET Version
+      inputs:
+        packageType: 'sdk'
+        version: '$(DotNetVersion)'
+    
+    - task: PowerShell@2
+      displayName: Install .NET MAUI
+      inputs:
+        targetType: 'inline'
+        script: |
+          & dotnet nuget locals all --clear
+          & dotnet workload install maui --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+          & dotnet workload install android ios maccatalyst tvos macos maui wasm-tools maui-maccatalyst --source https://aka.ms/dotnet6/nuget/index.json --source https://api.nuget.org/v3/index.json
+    
+    # https://docs.microsoft.com/en-us/dotnet/maui/windows/deployment/overview
+    - task: PowerShell@2
+      displayName: Build Windows MSIX
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet publish -f net6.0-windows10.0.19041.0 -c Release
