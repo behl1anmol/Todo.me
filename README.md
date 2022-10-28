@@ -1,4 +1,4 @@
-# [Todo.me](https://github.com/behl1anmol/Todo.me)[![Build Status](https://dev.azure.com/behl1anmol/Planner/_apis/build/status/behl1anmol.Todo.me?branchName=master)](https://dev.azure.com/behl1anmol/Planner/_build/latest?definitionId=6&branchName=master)
+# [Todo.me](https://github.com/behl1anmol/Todo.me)   [![Build Status](https://dev.azure.com/behl1anmol/Planner/_apis/build/status/behl1anmol.Todo.me?branchName=master)](https://dev.azure.com/behl1anmol/Planner/_build/latest?definitionId=6&branchName=master)
 Todo.me is a simple note taking and task tracking app made with .NET MAUI.
 
 ### Platforms
