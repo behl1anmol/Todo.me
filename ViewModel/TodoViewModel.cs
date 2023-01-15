@@ -1,8 +1,11 @@
-﻿namespace Todo.me.ViewModel;
+﻿using Todo.me.Repository;
+
+namespace Todo.me.ViewModel;
 
 [INotifyPropertyChanged]
 public partial class TodoViewModel :BaseViewModel
 {
+    private readonly ITodoRepository _todoRepository;
 
     public ObservableCollection<TodoModel> TodoModels
     {
@@ -10,9 +13,10 @@ public partial class TodoViewModel :BaseViewModel
     } = new ObservableCollection<TodoModel>();
 
 
-    public TodoViewModel()
+    public TodoViewModel(ITodoRepository todoRepository)
     {
-
+        _todoRepository = todoRepository;
+        var temp = todoRepository.GetItems().Result;
     }
 
     [RelayCommand]
@@ -33,8 +37,8 @@ public partial class TodoViewModel :BaseViewModel
     {
         Task.Run(async () =>
         {
-            var service = await TodoService.Instance;
-            await service.SaveTodo(todoModel.Todotable);
+            //var service = await TodoService.Instance;
+            await _todoRepository.SaveItem(todoModel.Todotable);
         });
     }
     [RelayCommand]
@@ -65,8 +69,8 @@ public partial class TodoViewModel :BaseViewModel
 
         Task.Run<List<TodoTable>>(async () =>
         {
-            var service = await TodoService.Instance;
-            var tasks = await service.GetTodos();
+            //var service = await TodoService.Instance;
+            var tasks = await _todoRepository.GetItems();
             tasks.Sort((t1, t2) =>
             {
                 if (t1.IsComplete == t2.IsComplete)

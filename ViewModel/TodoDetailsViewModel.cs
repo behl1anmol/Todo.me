@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maui.ApplicationModel;
 using Todo.me.Model.DataTable;
+using Todo.me.Repository;
 
 namespace Todo.me.ViewModel;
 
@@ -11,13 +12,15 @@ public partial class TodoDetailsViewModel : BaseViewModel
 {
     public AppThemeService _appTheme;
 
+    private readonly ITodoRepository _todoRepository;
 
     [ObservableProperty]
     private TodoModel _todoModel;
 
-    public TodoDetailsViewModel(AppThemeService appTheme)
+    public TodoDetailsViewModel(AppThemeService appTheme, ITodoRepository _todoRepository)
     {
         TodoModel = new TodoModel();
+        this._todoRepository = _todoRepository;
     }
 
     [RelayCommand]
@@ -31,9 +34,9 @@ public partial class TodoDetailsViewModel : BaseViewModel
         {
             var t = Task.Run(async () =>
             {
-                var service = await TodoService.Instance;
+                //var service = await TodoService.Instance;
                 TodoModel.Color = RandomGenerator();
-                await service.SaveTodo(TodoModel.Todotable);
+                await _todoRepository.SaveItem(TodoModel.Todotable);
             }).
                 ContinueInMainThreadWith(async () =>
                 {
@@ -46,8 +49,8 @@ public partial class TodoDetailsViewModel : BaseViewModel
     {
         Task.Run(async () =>
         {
-            var service = await TodoService.Instance;
-            await service.DeleteTodo(TodoModel.Id);
+            //var service = await TodoService.Instance;
+            await _todoRepository.DeleteItem(TodoModel.Id);
 
         }).ContinueInMainThreadWith(async () =>
         {
