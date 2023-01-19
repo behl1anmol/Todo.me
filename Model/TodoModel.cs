@@ -53,4 +53,10 @@ public class TodoModel
         get => Todotable.IsComplete;
         set => Todotable.IsComplete = value;
     }
+
+    public int SprintID
+    {
+        get => Todotable.SprintID;
+        set => Todotable.SprintID = value;
+    }
 }

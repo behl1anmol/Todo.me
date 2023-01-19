@@ -16,7 +16,12 @@ public class SprintTable
         set; get;
     }
 
-    public int TodoId
+    public int SprintDuration
+    {
+        set; get;
+    }
+
+    public List<TodoTable> TodoItems
     {
         set; get;
     }

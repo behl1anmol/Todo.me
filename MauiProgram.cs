@@ -32,6 +32,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<SprintView>();
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<ITodoRepository, TodoRepository>();
+        builder.Services.AddSingleton<ISprintRepository, SprintRepository>();
 
         builder.Services.AddTransient<TodoDetailsViewModel>();
         builder.Services.AddTransient<SprintDetailsViewModel>();

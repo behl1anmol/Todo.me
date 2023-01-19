@@ -16,7 +16,6 @@ public partial class TodoViewModel :BaseViewModel
     public TodoViewModel(ITodoRepository todoRepository)
     {
         _todoRepository = todoRepository;
-        var temp = todoRepository.GetItems().Result;
     }
 
     [RelayCommand]

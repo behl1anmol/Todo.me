@@ -36,4 +36,15 @@ public class TodoTable
         get;
     }
 
+    public int SprintID
+    {
+        set; get; 
+    }
+
+    [ForeignKey(nameof(SprintID))]
+    public SprintTable Sprint
+    {
+        get;set;
+    }
+
 }

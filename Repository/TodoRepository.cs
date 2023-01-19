@@ -55,8 +55,20 @@ public class TodoRepository : ITodoRepository
 
     public async Task<TodoTable> SaveItem(TodoTable item)
     {
-        await _dbContext.Todos.AddAsync(item);
+        var todo = await _dbContext.Todos.SingleOrDefaultAsync(x => x.Id == item.Id);
+        if (todo != null)
+        {
+            todo.Description = item.Description;
+            todo.Name = item.Name;
+            todo.IsComplete = item.IsComplete;
+            todo.Color = item.Color;
+        }
+        else
+        {
+            todo = item;
+            await _dbContext.Todos.AddAsync(todo);
+        }
         await _dbContext.SaveChangesAsync();
-        return item;
+        return todo;
     }
 }

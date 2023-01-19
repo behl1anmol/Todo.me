@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Todo.me.Model.DataTable;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Todo.me.Context;
 public class TodoContext : DbContext
 {
     public TodoContext(DbContextOptions<TodoContext> options)
-        :base(options)
+        : base(options)
     {
         SQLitePCL.Batteries_V2.Init();
         //this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
@@ -22,11 +17,19 @@ public class TodoContext : DbContext
     {
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.UseSqlite($"Filename={Constants.DbPath}");
-
+        optionsBuilder.LogTo(message => Debug.WriteLine(message), new[] {
+            DbLoggerCategory.Database.Command.Name
+        }, LogLevel.Information).EnableSensitiveDataLogging();
     }
 
-    public DbSet<TodoTable> Todos { get; set; }
-    public DbSet<SprintTable> Sprints { get; set; }
+    public DbSet<TodoTable> Todos
+    {
+        get; set;
+    }
+    public DbSet<SprintTable> Sprints
+    {
+        get; set;
+    }
 
 
 }
