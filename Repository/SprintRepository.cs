@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Maui.Core.Extensions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Todo.me.Context;
 
 namespace Todo.me.Repository;
@@ -45,11 +39,7 @@ public class SprintRepository : ISprintRepository
             return sprint;
         }
 
-        //sprint.Description = item.Description;
-        //sprint.Name = item.Name;
-        //sprint.IsComplete = item.IsComplete;
-        //sprint.Color = item.Color;
-
+        sprint.SprintDuration = item.SprintDuration;
         await _dbContext.SaveChangesAsync();
         return sprint;
     }
