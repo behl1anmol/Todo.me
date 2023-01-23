@@ -14,6 +14,7 @@ public partial class App : Application
         Routing.RegisterRoute(nameof(TodoView), typeof(TodoView));
         Routing.RegisterRoute(nameof(TodoDetailsView), typeof(TodoDetailsView));
         Routing.RegisterRoute(nameof(SprintDetailsView), typeof(SprintDetailsView));
+        Routing.RegisterRoute(nameof(SprintView), typeof(SprintView));
         _appTheme = appTheme;
     }
 

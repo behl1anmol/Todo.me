@@ -60,18 +60,18 @@
                     <Entry Text="{Binding TodoModel.Name, Mode=TwoWay}" Placeholder="Title" 
                        FontSize="Title"/>
                 </HorizontalStackLayout>
-                <HorizontalStackLayout Spacing="7" VerticalOptions="Center">
-                    <Label Text="Sprint" FontSize="Medium"
-                               VerticalOptions="Center" HorizontalOptions="Start"/>
-                    <Picker x:Name="SprintPicker" Title="Select a Sprint"
-                        ItemsSource="{Binding SprintModels}"
-                        ItemDisplayBinding="{Binding Id}"
-                        SelectedItem="{Binding SelectedSprint, Mode=TwoWay}"
-                        FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Start"/>
+                    <HorizontalStackLayout Spacing="7" VerticalOptions="Center">
+                        <Label Text="Sprint:" FontSize="Medium"
+                                VerticalOptions="Center" HorizontalOptions="Start"/>
+                        <Picker x:Name="SprintPicker" Title="Select a Sprint"
+                                ItemsSource="{Binding SprintModels}"
+                                ItemDisplayBinding="{Binding Id}"
+                                SelectedItem="{Binding SelectedSprint, Mode=TwoWay}"
+                                FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Start"/>
                 </HorizontalStackLayout>
 
 
-                <Editor Text="{Binding TodoModel.Description}" 
+                    <Editor Text="{Binding TodoModel.Description}" 
                         Placeholder="Start Typing" Grid.ColumnSpan="4"
                     FontSize="Body" FontAutoScalingEnabled="True" WidthRequest="350"
                     HorizontalOptions="StartAndExpand"

@@ -50,6 +50,15 @@ public partial class TodoViewModel :BaseViewModel
     }
 
     [RelayCommand]
+    async void GotoSprintView()
+    {
+        if (IsBusy) return;
+        IsBusy = true;
+        await Shell.Current.GoToAsync(nameof(SprintView));
+        IsBusy = false;
+    }
+
+    [RelayCommand]
     async void GotoMainPage()
     {
         if (IsBusy) return;

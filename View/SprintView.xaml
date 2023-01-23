@@ -1,12 +1,145 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:behavior="clr-namespace:Todo.me.Behaviour"
+             xmlns:viewmodel="clr-namespace:Todo.me.ViewModel"
+             xmlns:model="clr-namespace:Todo.me.Model"
              x:Class="Todo.me.View.SprintView"
-             Title="SprintView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:DataType="viewmodel:SprintViewModel"
+             xmlns:Converters="clr-namespace:Todo.me.View.Converters"
+             NavigationPage.HasNavigationBar="False"
+             Title="Sprints">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="DateTimeLabelStyle"
+               TargetType="Label">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <FlexLayout BackgroundColor="{AppThemeBinding Dark={StaticResource Black}, Light={StaticResource White}}">
+        <Grid Padding="20, 10, 20, 0" HorizontalOptions="StartAndExpand" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="3" Margin="15,15">
+                <Label Text="Sprints" FontAttributes="Bold" FontSize="35"/>
+            </HorizontalStackLayout>
+            <CollectionView  x:Name="xCollectionView" Grid.Row="1"  Grid.ColumnSpan="3" HorizontalOptions="StartAndExpand"  ItemsSource="{Binding SprintModels}"
+                             WidthRequest="350">
+                <CollectionView.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                            Radius="5"
+                            Opacity="0.3"/>
+                </CollectionView.Shadow>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid WidthRequest="{Binding Path=Width, Source={Reference xCollectionView}}" 
+                              HorizontalOptions="StartAndExpand" x:DataType="model:SprintModel"
+                              HeightRequest="120" Margin="0" Padding="0" RowSpacing="0" >
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="8" />
+                            </Grid.RowDefinitions>
+                            <Frame BackgroundColor="#ecf4ff" 
+                                    CornerRadius="15"
+                                   BorderColor="#ecf4ff"
+                                   HasShadow="True">
+
+                                <Frame.Shadow>
+                                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                                            Offset="6,10"
+                                            Opacity="0.8"/>
+                                </Frame.Shadow>
+
+                                <Frame Padding="10,0,10,0" HorizontalOptions="StartAndExpand" CornerRadius="15" 
+                                   WidthRequest="350"
+                                   
+                                   Background="#ecf4ff" 
+                                   BorderColor="#ecf4ff">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Path=TodoTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}" 
+                                                      CommandParameter="{Binding .}" />
+                                    </Frame.GestureRecognizers>
+                                    <StackLayout Orientation="Vertical">
+                                        <!--TextDecorations="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextDecorationsLabelConverter}}"-->
+
+                                        <Label 
+                                        
+                                        TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                                        Text="Sprint" 
+                                        MaxLines="1"
+                                        FontSize="Title"
+                                        FontAttributes="Bold"
+                                        LineBreakMode="TailTruncation"
+                                        HorizontalOptions="FillAndExpand"
+                                        
+                                        />
+                                        <Label 
+                                            TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                                            Text="{Binding Id}" 
+                                            MaxLines="1"
+                                            FontSize="Subtitle"
+                                            LineBreakMode="WordWrap"
+                                            
+                                            HorizontalOptions="StartAndExpand"/>
+
+                                    </StackLayout>
+                                </Frame>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Border Grid.Row="2"
+                    Grid.Column="1"
+                    StrokeThickness="0"
+                    Padding="10"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                    HorizontalOptions="Center">
+                <Grid RowDefinitions="*" ColumnDefinitions="*,*,*"
+                  ColumnSpacing="50"
+                  VerticalOptions="Center">
+                    <ImageButton Grid.Column="0" Source="todo" HeightRequest="35"
+                                 WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center" 
+                                 Command="{Binding GotoMainPageCommand}"/>
+                    <Border Grid.Column="1"
+                        StrokeThickness="0" StrokeShape="RoundRectangle 10"
+                        BackgroundColor="CadetBlue"
+                        HeightRequest="48" WidthRequest="48">
+                        <Border.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                            Radius="5"
+                            Opacity="0.3"/>
+                        </Border.Shadow>
+                        <ImageButton Source="add" HeightRequest="32" WidthRequest="22" 
+                                     HorizontalOptions="Center" VerticalOptions="Center"
+                                     Command="{Binding AddTappedCommand}"/>
+                    </Border>
+                    <ImageButton Grid.Column="2" Source="setting" HeightRequest="35"
+                                 WidthRequest="30"
+                                 HorizontalOptions="Center" VerticalOptions="Center" />
+                </Grid>
+            </Border>
+        </Grid>
+
+
+
+
+    </FlexLayout>
 </ContentPage>
