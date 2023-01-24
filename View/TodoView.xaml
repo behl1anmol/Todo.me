@@ -57,8 +57,7 @@
         </VerticalStackLayout>
         <CollectionView  x:Name="xCollectionView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                              HorizontalOptions="FillAndExpand"  ItemsSource="{Binding TodoModels}"
-                             VerticalOptions="FillAndExpand"
-                             >
+                             VerticalOptions="FillAndExpand">
             <CollectionView.Shadow>
                 <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
                             Radius="5"

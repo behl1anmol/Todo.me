@@ -20,8 +20,9 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <FlexLayout BackgroundColor="{AppThemeBinding Dark={StaticResource Black}, Light={StaticResource White}}">
-        <Grid Padding="20, 10, 20, 0" HorizontalOptions="StartAndExpand" >
+        <Grid Padding="20, 10, 20, 0" 
+              HorizontalOptions="FillAndExpand" 
+              VerticalOptions="FillAndExpand" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
@@ -33,81 +34,65 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="3" Margin="15,15">
+            <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3" Margin="15,15">
                 <Label Text="Sprints" FontAttributes="Bold" FontSize="35"/>
-            </HorizontalStackLayout>
-            <CollectionView  x:Name="xCollectionView" Grid.Row="1"  Grid.ColumnSpan="3" HorizontalOptions="StartAndExpand"  ItemsSource="{Binding SprintModels}"
-                             WidthRequest="350">
+            </VerticalStackLayout>
+            <CollectionView  x:Name="xCollectionView" 
+                             Grid.Row="1" Grid.Column="0" 
+                             Grid.ColumnSpan="3" 
+                             HorizontalOptions="FillAndExpand"  
+                             ItemsSource="{Binding SprintModels}"
+                             VerticalOptions="FillAndExpand">
                 <CollectionView.Shadow>
                     <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
                             Radius="5"
                             Opacity="0.3"/>
                 </CollectionView.Shadow>
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical"/>
+                    <LinearItemsLayout Orientation="Vertical"
+                                     ItemSpacing="8"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid WidthRequest="{Binding Path=Width, Source={Reference xCollectionView}}" 
-                              HorizontalOptions="StartAndExpand" x:DataType="model:SprintModel"
-                              HeightRequest="120" Margin="0" Padding="0" RowSpacing="0" >
-
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="8" />
-                            </Grid.RowDefinitions>
-                            <Frame BackgroundColor="#ecf4ff" 
+                <DataTemplate x:DataType="model:SprintModel">
+                    <Frame BackgroundColor="#ecf4ff" 
                                     CornerRadius="15"
                                    BorderColor="#ecf4ff"
                                    HasShadow="True">
 
-                                <Frame.Shadow>
-                                    <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                        <Frame.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                                             Offset="6,10"
                                             Opacity="0.8"/>
-                                </Frame.Shadow>
-
-                                <Frame Padding="10,0,10,0" HorizontalOptions="StartAndExpand" CornerRadius="15" 
-                                   WidthRequest="350"
-                                   
-                                   Background="#ecf4ff" 
-                                   BorderColor="#ecf4ff">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding Path=TodoTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}" 
+                        </Frame.Shadow>
+                        <StackLayout Orientation="Vertical">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=SprintTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}" 
                                                       CommandParameter="{Binding .}" />
-                                    </Frame.GestureRecognizers>
-                                    <StackLayout Orientation="Vertical">
-                                        <!--TextDecorations="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextDecorationsLabelConverter}}"-->
-
-                                        <Label 
-                                        
+                            </StackLayout.GestureRecognizers>
+                            <Label 
                                         TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                                         Text="Sprint" 
                                         MaxLines="1"
                                         FontSize="Title"
                                         FontAttributes="Bold"
                                         LineBreakMode="TailTruncation"
-                                        HorizontalOptions="FillAndExpand"
-                                        
-                                        />
-                                        <Label 
+                                        HorizontalOptions="FillAndExpand" />
+                            <Label 
                                             TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
                                             Text="{Binding Id}" 
                                             MaxLines="1"
                                             FontSize="Subtitle"
                                             LineBreakMode="WordWrap"
-                                            
                                             HorizontalOptions="StartAndExpand"/>
 
-                                    </StackLayout>
-                                </Frame>
-                            </Frame>
-                        </Grid>
-                    </DataTemplate>
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
             <Border Grid.Row="2"
-                    Grid.Column="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
                     StrokeThickness="0"
                     Padding="10"
                     BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
@@ -137,9 +122,4 @@
                 </Grid>
             </Border>
         </Grid>
-
-
-
-
-    </FlexLayout>
 </ContentPage>
