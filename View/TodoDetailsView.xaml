@@ -30,7 +30,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid Margin="15,0">
+        <Grid Margin="15,0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*"/>
@@ -40,11 +40,11 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <ImageButton Command="{Binding SaveCommand}" Source="back"
+            <ImageButton Command="{Binding CancelCommand}" Source="back"
                          Grid.Row="0" Grid.Column="0" Padding="0,10"
                          HorizontalOptions="Start"
                          VerticalOptions="Start"/>
@@ -52,15 +52,15 @@
                          Grid.Row="1"
                          Grid.RowSpan="3"
                          Grid.ColumnSpan="4"
-                         VerticalOptions="StartAndExpand"
-                         Orientation="Vertical"
-                         >
+                         VerticalOptions="FillAndExpand"
+                         HorizontalOptions="FillAndExpand"
+                         Orientation="Vertical">
 
-                <HorizontalStackLayout Spacing="20">
+                <VerticalStackLayout Spacing="20" Grid.Row="1">
                     <Entry Text="{Binding TodoModel.Name, Mode=TwoWay}" Placeholder="Title" 
                        FontSize="Title"/>
-                </HorizontalStackLayout>
-                    <HorizontalStackLayout Spacing="7" VerticalOptions="Center">
+                </VerticalStackLayout>
+                    <HorizontalStackLayout Spacing="7" VerticalOptions="Center" Grid.Row="2">
                         <Label Text="Sprint:" FontSize="Medium"
                                 VerticalOptions="Center" HorizontalOptions="Start"/>
                         <Picker x:Name="SprintPicker" Title="Select a Sprint"
@@ -71,10 +71,11 @@
                 </HorizontalStackLayout>
 
 
-                    <Editor Text="{Binding TodoModel.Description}" 
+                <Editor Text="{Binding TodoModel.Description}" 
                         Placeholder="Start Typing" Grid.ColumnSpan="4"
-                    FontSize="Body" FontAutoScalingEnabled="True" WidthRequest="350"
-                    HorizontalOptions="StartAndExpand"
+                        Grid.Column="0" Grid.Row="3"
+                    FontSize="Body" FontAutoScalingEnabled="True"
+                    HorizontalOptions="FillAndExpand"
                     VerticalOptions="FillAndExpand"/>
             </StackLayout>
 
