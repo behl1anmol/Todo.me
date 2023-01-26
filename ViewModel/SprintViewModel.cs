@@ -26,7 +26,8 @@ public partial class SprintViewModel : BaseViewModel
         await Shell.Current.GoToAsync(nameof(SprintDetailsView), true,
             new Dictionary<string, object>()
             {
-                ["SprintModel"] = sprintModel,
+                ["SprintTodoTableItems"] = sprintModel.TodoItems,
+                ["SprintID"] = sprintModel.Id
             });
         IsBusy = false;
     }
@@ -56,6 +57,12 @@ public partial class SprintViewModel : BaseViewModel
         IsBusy = true;
         await Shell.Current.GoToAsync("..");
         IsBusy = false;
+    }
+
+    [RelayCommand]
+    async void Cancel()
+    {
+        await Shell.Current.GoToAsync("..");
     }
 
     internal void Refresh()

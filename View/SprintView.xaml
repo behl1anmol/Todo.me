@@ -34,8 +34,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3" Margin="15,15">
-                <Label Text="Sprints" FontAttributes="Bold" FontSize="35"/>
+            <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3">
+            <ImageButton Command="{Binding CancelCommand}" Source="back"
+                         Grid.Column="0" Padding="0,8"
+                         HorizontalOptions="Start"
+                         VerticalOptions="Start"/>
+            <Label Text="Sprints" FontAttributes="Bold" FontSize="35" Margin="5,10"/>
             </VerticalStackLayout>
             <CollectionView  x:Name="xCollectionView" 
                              Grid.Row="1" Grid.Column="0" 
@@ -66,7 +70,7 @@
                         </Frame.Shadow>
                         <StackLayout Orientation="Vertical">
                             <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Path=SprintTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}" 
+                                <TapGestureRecognizer Command="{Binding Path=SprintTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:SprintViewModel}}}" 
                                                       CommandParameter="{Binding .}" />
                             </StackLayout.GestureRecognizers>
                             <Label 
