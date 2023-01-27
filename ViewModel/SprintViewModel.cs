@@ -7,14 +7,13 @@ public partial class SprintViewModel : BaseViewModel
 {
     private readonly ISprintRepository _sprintRepository;
 
-    public ObservableCollection<SprintModel> SprintModels
-    {
-        private set; get;
-    } = new ObservableCollection<SprintModel>();
+    [ObservableProperty]
+    public ObservableCollection<SprintModel> _sprintModels;
 
 
     public SprintViewModel(ISprintRepository sprintRepository)
     {
+        SprintModels = new ObservableCollection<SprintModel>();
         _sprintRepository = sprintRepository;
     }
 
@@ -46,8 +45,15 @@ public partial class SprintViewModel : BaseViewModel
     {
         if (IsBusy) return;
         IsBusy = true;
-        await Shell.Current.GoToAsync(nameof(SprintDetailsView));
+        await Task.Run(async () =>
+        {
+            await _sprintRepository.SaveItem(new SprintTable
+            {
+                SprintDuration = 7
+            });
+        });
         IsBusy = false;
+        Refresh();
     }
 
     [RelayCommand]

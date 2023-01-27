@@ -5,6 +5,7 @@ namespace Todo.me.ViewModel;
 
 [INotifyPropertyChanged]
 [QueryProperty(nameof(TodoModel), nameof(TodoModel))]
+[QueryProperty(nameof(SelectedSprintID), nameof(SelectedSprintID))]
 
 public partial class TodoDetailsViewModel : BaseViewModel
 {
@@ -18,6 +19,11 @@ public partial class TodoDetailsViewModel : BaseViewModel
 
     [ObservableProperty]
     private SprintModel _selectedSprint;
+
+    public int SelectedSprintID
+    {
+        get;set;
+    }
 
     public ObservableCollection<SprintModel> SprintModels
     {
@@ -105,7 +111,8 @@ public partial class TodoDetailsViewModel : BaseViewModel
                 {
                     SprintModels.Add(new SprintModel(t));
                 });
-                SelectedSprint = SprintModels.Where(s => s.Id.Equals(TodoModel.SprintID)).FirstOrDefault();
+                SelectedSprint = SprintModels.Where(s => s.Id.Equals(SelectedSprintID)).FirstOrDefault();
+
             }
 
             IsBusy = false;

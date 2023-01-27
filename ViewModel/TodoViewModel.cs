@@ -27,6 +27,7 @@ public partial class TodoViewModel :BaseViewModel
             new Dictionary<string, object>()
             {
                 ["TodoModel"] = todoModel,
+                ["SelectedSprintID"] = todoModel.SprintID,
             });
         IsBusy = false;
     }

@@ -68,7 +68,11 @@ public partial class SprintDetailsViewModel : BaseViewModel
         //need to pass in the sprint value for the current sprint from here
         if (IsBusy) return;
         IsBusy = true;
-        await Shell.Current.GoToAsync(nameof(TodoDetailsView));
+        await Shell.Current.GoToAsync(nameof(TodoDetailsView), true,
+            new Dictionary<string, object>()
+            {
+                ["SelectedSprintID"] = SprintID,
+            });
         IsBusy = false;
     }
 
