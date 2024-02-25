@@ -1,4 +1,5 @@
-﻿namespace Todo.me.Extensions;
+﻿using Microsoft.Maui.ApplicationModel;
+namespace Todo.me.Extensions;
 public static class TaskExtension
 {
     public static Task ContinueInMainThreadWith<T>(this Task<T> task, Action<T> action)

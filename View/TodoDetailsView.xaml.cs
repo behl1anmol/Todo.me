@@ -8,4 +8,9 @@ public partial class TodoDetailsView : ContentPage
         var hash = _viewModel.GetHashCode();
         BindingContext = _viewModel;
     }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        (BindingContext as TodoDetailsViewModel).Refresh();
+    }
 }

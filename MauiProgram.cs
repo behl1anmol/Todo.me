@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.DependencyInjection;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using Todo.me.Context;
+using Todo.me.Repository;
 
 namespace Todo.me;
 public static class MauiProgram
@@ -12,7 +15,8 @@ public static class MauiProgram
             fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
             fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
         }).UseMauiCommunityToolkit()
-        .UseSkiaSharp();
+        .UseSkiaSharp()
+        .Services.AddDbContext<TodoContext>();
 
         builder.Services.AddSingleton<AppShell>();
         builder.Services.AddSingleton<TodoViewModel>();
@@ -27,6 +31,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<TodoView>();
         builder.Services.AddSingleton<SprintView>();
         builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddSingleton<ITodoRepository, TodoRepository>();
+        builder.Services.AddSingleton<ISprintRepository, SprintRepository>();
 
         builder.Services.AddTransient<TodoDetailsViewModel>();
         builder.Services.AddTransient<SprintDetailsViewModel>();

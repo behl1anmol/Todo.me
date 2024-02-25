@@ -1,28 +1,47 @@
-﻿using Microsoft.Maui.ApplicationModel;
-using Todo.me.Model.DataTable;
+﻿using Todo.me.Repository;
 
 namespace Todo.me.ViewModel;
 
 
 [INotifyPropertyChanged]
 [QueryProperty(nameof(TodoModel), nameof(TodoModel))]
+[QueryProperty(nameof(SelectedSprintID), nameof(SelectedSprintID))]
 
 public partial class TodoDetailsViewModel : BaseViewModel
 {
     public AppThemeService _appTheme;
 
+    private readonly ITodoRepository _todoRepository;
+    private readonly ISprintRepository _sprintRepository;
 
     [ObservableProperty]
     private TodoModel _todoModel;
 
-    public TodoDetailsViewModel(AppThemeService appTheme)
+    [ObservableProperty]
+    private SprintModel _selectedSprint;
+
+    public int SelectedSprintID
+    {
+        get;set;
+    }
+
+    public ObservableCollection<SprintModel> SprintModels
+    {
+        private set; get;
+    } = new ObservableCollection<SprintModel>();
+
+
+    public TodoDetailsViewModel(AppThemeService appTheme, ITodoRepository _todoRepository, ISprintRepository sprintRepository)
     {
         TodoModel = new TodoModel();
+        this._todoRepository = _todoRepository;
+        _sprintRepository = sprintRepository;
     }
 
     [RelayCommand]
     void Save()
     {
+        var temp = SelectedSprint;
         if (TodoModel.Name == null && TodoModel.Description == null)
         {
             Cancel();
@@ -31,9 +50,10 @@ public partial class TodoDetailsViewModel : BaseViewModel
         {
             var t = Task.Run(async () =>
             {
-                var service = await TodoService.Instance;
+                //var service = await TodoService.Instance;
                 TodoModel.Color = RandomGenerator();
-                await service.SaveTodo(TodoModel.Todotable);
+                TodoModel.SprintID = SelectedSprint.Id;
+                await _todoRepository.SaveItem(TodoModel.Todotable);
             }).
                 ContinueInMainThreadWith(async () =>
                 {
@@ -46,8 +66,8 @@ public partial class TodoDetailsViewModel : BaseViewModel
     {
         Task.Run(async () =>
         {
-            var service = await TodoService.Instance;
-            await service.DeleteTodo(TodoModel.Id);
+            //var service = await TodoService.Instance;
+            await _todoRepository.DeleteItem(TodoModel.Id);
 
         }).ContinueInMainThreadWith(async () =>
         {
@@ -59,6 +79,44 @@ public partial class TodoDetailsViewModel : BaseViewModel
     async void Cancel()
     {
         await Shell.Current.GoToAsync("..");
+    }
+    internal void Refresh()
+    {
+        if (IsBusy)
+        {
+            return;
+        }
+        IsBusy = true;
+
+        Task.Run<List<SprintTable>>(async () =>
+        {
+            List<SprintTable> tasks = await _sprintRepository.GetItems();
+            //if no sprint exist create a new sprint with default duration as 7
+            if (tasks.Count() == 0)
+            {
+                var task = new SprintTable()
+                {
+                    SprintDuration = 7
+                };
+                await _sprintRepository.SaveItem(task);
+                tasks.Add(task);
+            }
+            return tasks;
+        }).
+        ContinueInMainThreadWith((sprintTables) =>
+        {
+            if (sprintTables != null && sprintTables.Count > 0)
+            {
+                sprintTables.ForEach((t) =>
+                {
+                    SprintModels.Add(new SprintModel(t));
+                });
+                SelectedSprint = SprintModels.Where(s => s.Id.Equals(SelectedSprintID)).FirstOrDefault();
+
+            }
+
+            IsBusy = false;
+        });
     }
 
 }

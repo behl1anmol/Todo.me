@@ -39,158 +39,137 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <HorizontalStackLayout BackgroundColor="{AppThemeBinding Dark={StaticResource Black}, Light={StaticResource White}}">
-        <Grid Padding="20, 10, 20, 0" HorizontalOptions="StartAndExpand" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+    <Grid Padding="20, 10, 20, 0" HorizontalOptions="FillAndExpand" 
+              VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-            <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="3" Margin="15,15">
-                <Label Text="ToDo" FontAttributes="Bold" FontSize="35"/>
-            </HorizontalStackLayout>
-            <CollectionView  x:Name="xCollectionView" Grid.Row="1"  Grid.ColumnSpan="3" HorizontalOptions="StartAndExpand"  ItemsSource="{Binding TodoModels}"
-                             WidthRequest="350">
-                <CollectionView.Shadow>
-                    <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+        <VerticalStackLayout Grid.Row="0" Grid.ColumnSpan="3" Margin="15,15">
+            <Label Text="ToDo" FontAttributes="Bold" FontSize="35"/>
+        </VerticalStackLayout>
+        <CollectionView  x:Name="xCollectionView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                             HorizontalOptions="FillAndExpand"  ItemsSource="{Binding TodoModels}"
+                             VerticalOptions="FillAndExpand">
+            <CollectionView.Shadow>
+                <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
                             Radius="5"
                             Opacity="0.3"/>
-                </CollectionView.Shadow>
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid WidthRequest="{Binding Path=Width, Source={Reference xCollectionView}}" 
-                              HorizontalOptions="StartAndExpand" x:DataType="model:TodoModel"
-                              HeightRequest="120" Margin="0" Padding="0" RowSpacing="0" >
-
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="8" />
-                            </Grid.RowDefinitions>
-                            <Frame BackgroundColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}" 
+            </CollectionView.Shadow>
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"
+                                 ItemSpacing="8"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:TodoModel">
+                    <Frame BackgroundColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}" 
                                     CornerRadius="15"
-                                   BorderColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}">
+                                   IsClippedToBounds="True"
+                                   BorderColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}"
+                           HasShadow="True">
 
-                                <Frame.Shadow>
-                                    <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
-                                            Offset="-5,-5"
-                                            Radius="50"
-                                            Opacity="1"/>
-                                </Frame.Shadow>
+                        <Frame.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                                            Offset="6,10"
+                                            Opacity="0.8"/>
+                        </Frame.Shadow>
 
-                                <SwipeView HorizontalOptions="Center" VerticalOptions="Center" >
-                                    <SwipeView.LeftItems>
-                                        <SwipeItems
-                                        SwipeBehaviorOnInvoked="RemainOpen">
-                                            <SwipeItem
+                        <SwipeView HorizontalOptions="Center" VerticalOptions="Center" >
+                            <SwipeView.LeftItems>
+                                <SwipeItems SwipeBehaviorOnInvoked="RemainOpen">
+                                    <SwipeItem
                                             IconImageSource="delete" 
                                             BackgroundColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}"/>
-                                        </SwipeItems>
-                                    </SwipeView.LeftItems>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
 
-                                    <SwipeView.RightItems>
-                                        <SwipeItems SwipeBehaviorOnInvoked="RemainOpen">
-                                            <SwipeItem
+                            <SwipeView.RightItems>
+                                <SwipeItems SwipeBehaviorOnInvoked="RemainOpen">
+                                    <SwipeItem
                                             IconImageSource="approve"
                                              BackgroundColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}"
                                              Command="{Binding Path=IsCompleteTappedCommand, Mode=OneTime, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}"
                                              CommandParameter="{Binding .}"/>
-                                        </SwipeItems>
-                                    </SwipeView.RightItems>
-                                    <Frame Padding="10,0,10,0" HorizontalOptions="StartAndExpand" CornerRadius="15" 
-                                   WidthRequest="350"
-                                   
-                                   Background="{Binding Color, Converter={StaticResource ValueToColorConverter}}"
-                                   BorderColor="{Binding Color, Converter={StaticResource ValueToColorConverter}}">
-                                        <Frame.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Path=TodoTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}" 
-                                                      CommandParameter="{Binding .}" />
-                                        </Frame.GestureRecognizers>
-                                        <StackLayout Orientation="Vertical">
-                                            <!--TextDecorations="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextDecorationsLabelConverter}}"-->
-                                        
-                                        <Label 
-                                        
-                                        TextColor="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextColorLabelConverter}}" 
-                                        Text="{Binding Name}" 
-                                        MaxLines="1"
-                                        FontSize="Title"
-                                        FontAttributes="Bold"
-                                        LineBreakMode="TailTruncation"
-                                        HorizontalOptions="FillAndExpand"
-                                        
-                                        />
-                                        <Label 
-                                            TextColor="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextColorLabelConverter}}" 
-                                            Text="{Binding Description}" 
-                                            MaxLines="1"
-                                            FontSize="Subtitle"
-                                            LineBreakMode="WordWrap"
-                                            
-                                            HorizontalOptions="StartAndExpand"/>
-                                           
-                                            <behavior:EventToCommandObserver
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <StackLayout Orientation="Vertical">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=TodoTappedCommand, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}" 
+                                                                  CommandParameter="{Binding .}" />
+                                </StackLayout.GestureRecognizers>
+                                <Label 
+                                                TextColor="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextColorLabelConverter}}" 
+                                                Text="{Binding Name}" 
+                                                MaxLines="3"
+                                                FontSize="Large"
+                                                FontAttributes="Bold"
+                                                LineBreakMode="TailTruncation"
+                                                HorizontalOptions="FillAndExpand"/>
+                                <Label 
+                                                TextColor="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToTextColorLabelConverter}}" 
+                                                Text="{Binding Description}" 
+                                                MaxLines="4"
+                                                FontSize="Body"
+                                                LineBreakMode="WordWrap"
+                                                VerticalOptions="FillAndExpand"
+                                                HorizontalOptions="StartAndExpand"/>
+
+                                <behavior:EventToCommandObserver
                                                     Command="{Binding Path=IsCompleteTappedCommand, Mode=OneTime, Source={RelativeSource AncestorType={x:Type viewmodel:TodoViewModel}}}"
                                                     CommandParameter="{Binding .}"
                                                     HorizontalOptions="End"
                                                     VerticalOptions="End">
-                                            <CheckBox 
+                                    <CheckBox 
                                                     x:Name="xIsComplete" 
                                                     behavior:EventToCommandObserver.EventName="CheckedChanged"
                                                     Color="{Binding Source={Reference xIsComplete}, Path=IsChecked, Converter={StaticResource BoolToColorIsCompleteConverter}}" 
                                                     IsChecked="{Binding IsComplete}"/>
-                                            </behavior:EventToCommandObserver>
-                                            
-                                        </StackLayout>
-                                    </Frame>
-                                </SwipeView>
-                            </Frame>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <Border Grid.Row="2"
-                    Grid.Column="1"
+                                </behavior:EventToCommandObserver>
+
+                            </StackLayout>
+                        </SwipeView>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Border Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
                     StrokeThickness="0"
                     Padding="10"
                     BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
                     HorizontalOptions="Center">
-                <Grid RowDefinitions="*" ColumnDefinitions="*,*,*"
+            <Grid RowDefinitions="*" ColumnDefinitions="*,*,*"
                   ColumnSpacing="50"
                   VerticalOptions="Center">
-                    <ImageButton Grid.Column="0" Source="todo" HeightRequest="35"
+                <ImageButton Grid.Column="0" Source="todo" HeightRequest="35"
                                  WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center" 
                                  Command="{Binding GotoMainPageCommand}"/>
-                    <Border Grid.Column="1"
+                <Border Grid.Column="1"
                         StrokeThickness="0" StrokeShape="RoundRectangle 10"
                         BackgroundColor="CadetBlue"
                         HeightRequest="48" WidthRequest="48">
-                        <Border.Shadow>
-                            <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+                    <Border.Shadow>
+                        <Shadow Brush="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
                             Radius="5"
                             Opacity="0.3"/>
-                        </Border.Shadow>
-                        <ImageButton Source="add" HeightRequest="32" WidthRequest="22" 
+                    </Border.Shadow>
+                    <ImageButton Source="add" HeightRequest="32" WidthRequest="22" 
                                      HorizontalOptions="Center" VerticalOptions="Center"
                                      Command="{Binding AddTappedCommand}"/>
-                    </Border>
-                    <ImageButton Grid.Column="2" Source="setting" HeightRequest="35"
+                </Border>
+                <ImageButton Grid.Column="2" Source="setting" HeightRequest="35"
                                  WidthRequest="30"
-                                 HorizontalOptions="Center" VerticalOptions="Center" />
-                </Grid>
-            </Border>
-        </Grid>
-
-
-
-
-    </HorizontalStackLayout>
+                                 HorizontalOptions="Center" VerticalOptions="Center" 
+                                 Command="{Binding GotoSprintViewCommand}"/>
+            </Grid>
+        </Border>
+    </Grid>
 </ContentPage>

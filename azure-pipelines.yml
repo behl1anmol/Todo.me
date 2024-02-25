@@ -1,6 +1,6 @@
 variables:
     BuildConfiguration: Release
-    DotNetVersion: 6.0.300
+    DotNetVersion: 8.x
     VSVERSION: 17/pre
 
 stages:
@@ -43,7 +43,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          dotnet build -f net6.0-android -c Release
+          dotnet build -f net8.0-android -c Release
 
 - stage: BuildWindows
   jobs:
@@ -76,4 +76,4 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          dotnet publish -f net6.0-windows10.0.19041.0 -c Release
+          dotnet publish -f net8.0-windows10.0.19041.0 -c Release
