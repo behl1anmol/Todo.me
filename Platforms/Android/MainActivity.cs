@@ -27,6 +27,10 @@ public class MainActivity : MauiAppCompatActivity
         //...
         base.SetTheme(Resource.Style.Maui_SplashTheme);
         base.OnCreate(savedInstanceState);
+        var activity = Platform.CurrentActivity;
+        var window = activity.Window;
+
+        window.SetFlags(Android.Views.WindowManagerFlags.Secure, Android.Views.WindowManagerFlags.Secure);
 
         //...
     }
