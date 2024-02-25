@@ -3,7 +3,7 @@ trigger:
 
 variables:
     BuildConfiguration: Release
-    DotNetVersion: 8.0
+    DotNetVersion: 8.x
     VSVERSION: 17/pre
 
 stages:
