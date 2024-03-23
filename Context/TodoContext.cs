@@ -30,7 +30,7 @@ public class TodoContext : DbContext
 
         modelBuilder.Entity<TodoTable>()
             .HasOne(x => x.Sprint)
-            .WithMany()
+            .WithMany(x=>x.TodoItems)
             .HasForeignKey(x => x.SprintID);
 
         modelBuilder.Entity<SprintTable>()
