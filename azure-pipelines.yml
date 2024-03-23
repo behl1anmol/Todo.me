@@ -45,9 +45,16 @@ stages:
         script: |
           dotnet build -f net8.0-android -c Release
 
+    - task: Bash@3
+      displayName: Publish Android App
+      inputs:
+        targetType: 'inline'
+        script: |
+          dotnet publish -f net8.0-android -c Release
+
     - task: CopyFiles@2
       inputs:
-        Contents: '**/bin/$(BuildConfiguration)/net8.0-android/publish/**'
+        Contents: '**'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - task: PublishBuildArtifacts@1
