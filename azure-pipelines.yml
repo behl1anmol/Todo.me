@@ -47,9 +47,7 @@ stages:
 
     - task: CopyFiles@2
       inputs:
-        Contents: |
-          **\**\Todo.me\bin\Release\net8.0-android\publish\*.apk
-          Todo.me\bin\Release\net8.0-android\publish\*.apk
+        Contents: '**/bin/$(BuildConfiguration)/net8.0-android/publish/**'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - task: PublishBuildArtifacts@1
