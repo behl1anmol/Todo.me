@@ -22,6 +22,20 @@ public class TodoContext : DbContext
         }, LogLevel.Information).EnableSensitiveDataLogging();
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<TodoTable>()
+            .HasKey(x => x.Id);
+
+        modelBuilder.Entity<TodoTable>()
+            .HasOne(x => x.Sprint)
+            .WithMany()
+            .HasForeignKey(x => x.SprintID);
+
+        modelBuilder.Entity<SprintTable>()
+            .HasKey(x => x.Id);
+    }
     public DbSet<TodoTable> Todos
     {
         get; set;
