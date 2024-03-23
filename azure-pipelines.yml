@@ -54,7 +54,8 @@ stages:
 
     - task: CopyFiles@2
       inputs:
-        Contents: '**'
+      #define contents for bin\Release\net8.0-android\publish to $(Build.ArtifactStagingDirectory)
+        Contents: '**\bin\Release\net8.0-android\publish\**'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - task: PublishBuildArtifacts@1
