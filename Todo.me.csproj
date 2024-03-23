@@ -26,13 +26,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
-    <AndroidPackageFormat>aab</AndroidPackageFormat>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidUseAapt2>True</AndroidUseAapt2>
     <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
     <DebugSymbols>True</DebugSymbols>
-    <PublishTrimmed>False</PublishTrimmed>
-    <RunAOTCompilation>False</RunAOTCompilation>
+    <PublishTrimmed>True</PublishTrimmed>
+    <RunAOTCompilation>True</RunAOTCompilation>
     <AndroidEnableMultiDex>True</AndroidEnableMultiDex>
+    <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
     <DebugSymbols>True</DebugSymbols>
